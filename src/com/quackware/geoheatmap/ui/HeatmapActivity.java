@@ -19,16 +19,33 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-package com.quackware.geoheatmap;
+package com.quackware.geoheatmap.ui;
 
-import android.app.Application;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapView;
+import com.quackware.geoheatmap.R;
+import com.quackware.geoheatmap.R.id;
+import com.quackware.geoheatmap.R.layout;
 
-public class MyApplication extends Application {
+import android.app.Activity;
+import android.os.Bundle;
+
+public class HeatmapActivity extends MapActivity {
 	
 	@Override
-	public void onCreate()
+	public void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate();
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.heatmap);
+		
+		MapView mapview = (MapView)findViewById(R.id.mapview);
+		mapview.setBuiltInZoomControls(true);
+	}
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

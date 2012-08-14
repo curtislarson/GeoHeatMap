@@ -3,6 +3,8 @@ package com.quackware.geoheatmap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.quackware.geoheatmap.database.HeatmapDatabaseHelper;
+
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
@@ -20,6 +22,7 @@ public class GpsService extends Service implements LocationListener {
 
 	private LocationManager mLocationManager;
 	private Handler mHandler;
+	private HeatmapDatabaseHelper mDatabaseHelper;
 	
 	@Override
 	public void onCreate()
@@ -27,6 +30,7 @@ public class GpsService extends Service implements LocationListener {
 		super.onCreate();
 		mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 		mHandler = new Handler();
+		mDatabaseHelper = new HeatmapDatabaseHelper(this);
 	}
 	
 	@Override
@@ -42,6 +46,7 @@ public class GpsService extends Service implements LocationListener {
 		{
 			double lat = location.getLatitude();
 			double lon = location.getLongitude();
+			mDatabaseHelper.insertNewGpsData(lat, lon);
 		}
 		else if(location.getProvider().equals(LocationManager.NETWORK_PROVIDER))
 		{

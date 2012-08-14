@@ -1,5 +1,6 @@
 package com.quackware.geoheatmap.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -20,6 +21,17 @@ public class HeatmapDatabaseHelper extends SQLiteOpenHelper {
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
 	}
 	
+	public void insertNewGpsData(double latitude, double longitude)
+	{
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put("LATITUDE",latitude);
+		values.put("LONGITUDE",longitude);
+		
+		db.insert(GPS_TABLE_NAME, null, values);
+	}
+	
 	@Override
 	public void onCreate(SQLiteDatabase db)
 	{
@@ -36,5 +48,4 @@ public class HeatmapDatabaseHelper extends SQLiteOpenHelper {
 		}
 		
 	}
-
 }

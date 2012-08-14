@@ -1,5 +1,8 @@
 package com.quackware.geoheatmap;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
@@ -7,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 
 //Request gps and network provider.
@@ -15,12 +19,14 @@ import android.os.IBinder;
 public class GpsService extends Service implements LocationListener {
 
 	private LocationManager mLocationManager;
+	private Handler mHandler;
 	
 	@Override
 	public void onCreate()
 	{
 		super.onCreate();
 		mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+		mHandler = new Handler();
 	}
 	
 	@Override
@@ -41,6 +47,26 @@ public class GpsService extends Service implements LocationListener {
 		{
 			
 		}
+		
+		//Schedule another check for gps.
+		//Change 1 to whatever minute value we want.
+		mLocationManager.removeUpdates(this);
+		mHandler.postDelayed(mGpsRunnable,1000*60*1);
+	}
+	
+	private Runnable mGpsRunnable = new Runnable()
+	{
+
+		@Override
+		public void run() {
+			getNewLocation();
+		}
+		
+	};
+	
+	private void getNewLocation()
+	{
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
 	}
 
 	@Override

@@ -21,8 +21,13 @@
  */
 package com.quackware.geoheatmap.database;
 
+import java.util.ArrayList;
+
+import com.quackware.geoheatmap.map.HeatPoint;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -40,6 +45,31 @@ public class HeatmapDatabaseHelper extends SQLiteOpenHelper {
 	public HeatmapDatabaseHelper(Context context)
 	{
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
+	}
+	
+	public ArrayList<HeatPoint> getHeatPointList()
+	{
+		ArrayList<HeatPoint> points = new ArrayList<HeatPoint>();
+		
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor = db.query(GPS_TABLE_NAME, new String[] {"LATITUDE","LONGITUDE"},
+				null, null, null, null, null);
+		if(cursor == null)
+		{
+			return points;
+		}
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				double lat = cursor.getDouble(0);
+				double lon = cursor.getDouble(1);
+				HeatPoint hp = new HeatPoint((float)lat,(float)lon);
+				points.add(hp);
+			}
+			while(cursor.moveToNext());
+		}
+		return points;
 	}
 	
 	public void insertNewGpsData(double latitude, double longitude)

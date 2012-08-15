@@ -21,16 +21,23 @@
  */
 package com.quackware.geoheatmap.ui;
 
+import java.util.ArrayList;
+
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.quackware.geoheatmap.R;
 import com.quackware.geoheatmap.R.id;
 import com.quackware.geoheatmap.R.layout;
+import com.quackware.geoheatmap.database.HeatmapDatabaseHelper;
+import com.quackware.geoheatmap.map.HeatMapOverlay;
+import com.quackware.geoheatmap.map.HeatPoint;
 
 import android.app.Activity;
 import android.os.Bundle;
 
 public class HeatmapActivity extends MapActivity {
+	
+	private MapView mMapView;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -38,8 +45,21 @@ public class HeatmapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.heatmap);
 		
-		MapView mapview = (MapView)findViewById(R.id.mapview);
-		mapview.setBuiltInZoomControls(true);
+		mMapView = (MapView)findViewById(R.id.mapview);
+		mMapView.setBuiltInZoomControls(true);
+		
+		loadPointsFromDatabase();
+	}
+	
+	private void loadPointsFromDatabase()
+	{
+		HeatMapOverlay overlay = new HeatMapOverlay(20000,mMapView);
+
+		HeatmapDatabaseHelper mDatabaseHelper = new HeatmapDatabaseHelper(this);
+		ArrayList<HeatPoint> heatPointList = mDatabaseHelper.getHeatPointList();
+		overlay.update(heatPointList);
+		
+		mMapView.getOverlays().add(overlay);
 	}
 
 	@Override

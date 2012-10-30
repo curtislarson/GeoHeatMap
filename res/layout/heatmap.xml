@@ -28,5 +28,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:clickable="true"
-    android:apiKey="0T8qr9wGZ5bPHYhX58ALhEDX_PwJAYU_Pfa7hyQ"
+    android:enabled="true"
+    android:apiKey="0T8qr9wGZ5bNp7es-7aTL2r0G7dQqhmLrdtVb0Q"
 />

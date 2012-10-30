@@ -22,7 +22,9 @@
 package com.quackware.geoheatmap.ui;
 
 import java.util.ArrayList;
+import java.util.Random;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.quackware.geoheatmap.R;
@@ -34,10 +36,13 @@ import com.quackware.geoheatmap.map.HeatPoint;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class HeatmapActivity extends MapActivity {
 	
 	private MapView mMapView;
+	
+	private final static String TAG = "HeatmapActivity";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -48,18 +53,57 @@ public class HeatmapActivity extends MapActivity {
 		mMapView = (MapView)findViewById(R.id.mapview);
 		mMapView.setBuiltInZoomControls(true);
 		
-		loadPointsFromDatabase();
+
+		Log.i(TAG,mMapView.getWidth() + " " + mMapView.getHeight());
+		
+		//loadPointsFromDatabase();
 	}
 	
 	private void loadPointsFromDatabase()
 	{
 		HeatMapOverlay overlay = new HeatMapOverlay(20000,mMapView);
 
-		HeatmapDatabaseHelper mDatabaseHelper = new HeatmapDatabaseHelper(this);
-		ArrayList<HeatPoint> heatPointList = mDatabaseHelper.getHeatPointList();
+		//HeatmapDatabaseHelper mDatabaseHelper = new HeatmapDatabaseHelper(this);
+		//ArrayList<HeatPoint> heatPointList = mDatabaseHelper.getHeatPointList();
+		ArrayList<HeatPoint> heatPointList = generateTestHeatPoints();
 		overlay.update(heatPointList);
 		
 		mMapView.getOverlays().add(overlay);
+	}
+	
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus)
+	{
+		super.onWindowFocusChanged(hasFocus);
+		Log.i(TAG,mMapView.getWidth() + " " + mMapView.getHeight());
+		GeoPoint gp = new GeoPoint((int)37.573961*1000000,(int)-77.539614*1000000);
+		mMapView.getController().setCenter(gp);
+		mMapView.getController().setZoom(10);
+		loadPointsFromDatabase();
+	}
+
+	private ArrayList<HeatPoint> generateTestHeatPoints()
+	{
+		//37.573961,-77.539614
+		float latseed = 37.573961f;
+		float lonseed = -77.439614f;
+		ArrayList<HeatPoint> returnList = new ArrayList<HeatPoint>();
+		Random r = new Random(System.currentTimeMillis());
+		for(int i = 0;i<100;i++)
+		{
+			float newlat;
+			float newlon;
+			if(r.nextInt(10) > 5)
+				newlat = latseed + r.nextFloat()/1000.0f;
+			else
+				newlat = latseed - r.nextFloat()/1000.0f;
+			if(r.nextInt(10) > 5)
+				newlon = lonseed + r.nextFloat()/1000.0f;
+			else
+				newlon = lonseed - r.nextFloat()/1000.0f;
+			returnList.add(new HeatPoint(newlat,newlon));
+		}
+		return returnList;
 	}
 
 	@Override

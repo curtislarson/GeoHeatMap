@@ -52,6 +52,8 @@ public class HeatMapOverlay extends Overlay {
         private MapView mapView;
         private ReentrantLock lock;
         
+        private List<HeatPoint> heatPoints;
+        
         public HeatMapOverlay(float radius, MapView mapview){
                 this.radius = radius;
                 this.mapView = mapview;
@@ -75,7 +77,10 @@ public class HeatMapOverlay extends Overlay {
                         this.layer = null;      
                         lock.unlock();
                 }
-                
+                else if(e.getAction() == MotionEvent.ACTION_UP)
+                {
+                	redraw();
+                }
                 return super.onTouchEvent(e, mapView);
         }
         
@@ -85,10 +90,23 @@ public class HeatMapOverlay extends Overlay {
          * @param points
          */
         public void update(List<HeatPoint> points){
-                float pxRadius = (float) (mapView.getProjection().metersToEquatorPixels(radius) * 1/Math.cos(Math.toRadians(mapView.getMapCenter().getLatitudeE6()/1E6)));
-                HeatTask task = new HeatTask(mapView.getWidth(), mapView.getHeight(), pxRadius, points);
-                new Thread(task).start();
-        }       
+        	heatPoints = points;
+        	redraw();
+        }
+        
+        public void redraw()
+        {
+        	if(heatPoints == null)
+        	{
+        		//warning need to call update
+        	}
+        	else
+        	{
+        		 float pxRadius = (float) (mapView.getProjection().metersToEquatorPixels(radius) * 1/Math.cos(Math.toRadians(mapView.getMapCenter().getLatitudeE6()/1E6)));
+                 HeatTask task = new HeatTask(mapView.getWidth(), mapView.getHeight(), pxRadius, heatPoints);
+                 new Thread(task).start();
+        	}
+        }
         
         private class HeatTask implements Runnable{
                 

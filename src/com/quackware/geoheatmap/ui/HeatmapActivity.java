@@ -77,8 +77,8 @@ public class HeatmapActivity extends MapActivity {
 		super.onWindowFocusChanged(hasFocus);
 		Log.i(TAG,mMapView.getWidth() + " " + mMapView.getHeight());
 		GeoPoint gp = new GeoPoint((int)37.573961*1000000,(int)-77.539614*1000000);
-		mMapView.getController().setCenter(gp);
 		mMapView.getController().setZoom(10);
+		mMapView.getController().setCenter(gp);
 		loadPointsFromDatabase();
 	}
 
@@ -86,7 +86,7 @@ public class HeatmapActivity extends MapActivity {
 	{
 		//37.573961,-77.539614
 		float latseed = 37.573961f;
-		float lonseed = -77.439614f;
+		float lonseed = -77.539614f;
 		ArrayList<HeatPoint> returnList = new ArrayList<HeatPoint>();
 		Random r = new Random(System.currentTimeMillis());
 		for(int i = 0;i<100;i++)
@@ -94,13 +94,13 @@ public class HeatmapActivity extends MapActivity {
 			float newlat;
 			float newlon;
 			if(r.nextInt(10) > 5)
-				newlat = latseed + r.nextFloat()/1000.0f;
+				newlat = latseed + r.nextFloat()/100.0f;
 			else
-				newlat = latseed - r.nextFloat()/1000.0f;
+				newlat = latseed - r.nextFloat()/100.0f;
 			if(r.nextInt(10) > 5)
-				newlon = lonseed + r.nextFloat()/1000.0f;
+				newlon = lonseed + r.nextFloat()/100.0f;
 			else
-				newlon = lonseed - r.nextFloat()/1000.0f;
+				newlon = lonseed - r.nextFloat()/100.0f;
 			returnList.add(new HeatPoint(newlat,newlon));
 		}
 		return returnList;

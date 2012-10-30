@@ -37,12 +37,17 @@ import com.quackware.geoheatmap.map.HeatPoint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 
-public class HeatmapActivity extends MapActivity {
+public class HeatmapActivity extends MapActivity{
 	
 	private MapView mMapView;
 	
 	private final static String TAG = "HeatmapActivity";
+	
+	private HeatMapOverlay mOverlay;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -52,7 +57,6 @@ public class HeatmapActivity extends MapActivity {
 		
 		mMapView = (MapView)findViewById(R.id.mapview);
 		mMapView.setBuiltInZoomControls(true);
-		
 
 		Log.i(TAG,mMapView.getWidth() + " " + mMapView.getHeight());
 		
@@ -61,14 +65,14 @@ public class HeatmapActivity extends MapActivity {
 	
 	private void loadPointsFromDatabase()
 	{
-		HeatMapOverlay overlay = new HeatMapOverlay(20000,mMapView);
+		mOverlay = new HeatMapOverlay(mMapView);
 
 		//HeatmapDatabaseHelper mDatabaseHelper = new HeatmapDatabaseHelper(this);
 		//ArrayList<HeatPoint> heatPointList = mDatabaseHelper.getHeatPointList();
 		ArrayList<HeatPoint> heatPointList = generateTestHeatPoints();
-		overlay.update(heatPointList);
+		mOverlay.update(heatPointList);
 		
-		mMapView.getOverlays().add(overlay);
+		mMapView.getOverlays().add(mOverlay);
 	}
 	
 	@Override

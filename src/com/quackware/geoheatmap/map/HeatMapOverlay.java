@@ -32,6 +32,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RadialGradient;
 import android.graphics.Shader.TileMode;
+import android.util.Log;
 import android.view.MotionEvent;
 
 
@@ -48,14 +49,16 @@ import com.google.android.maps.Projection;
 public class HeatMapOverlay extends Overlay {
         
         private Bitmap layer;
-        private float radius;
+       // private float radius;
         private MapView mapView;
         private ReentrantLock lock;
         
         private List<HeatPoint> heatPoints;
         
-        public HeatMapOverlay(float radius, MapView mapview){
-                this.radius = radius;
+        private static final String TAG = "HeatMapOverlay";
+        
+        public HeatMapOverlay(MapView mapview){
+               // this.radius = radius;
                 this.mapView = mapview;
                 this.lock = new ReentrantLock();
         }
@@ -81,6 +84,7 @@ public class HeatMapOverlay extends Overlay {
                 {
                 	redraw();
                 }
+                
                 return super.onTouchEvent(e, mapView);
         }
         
@@ -102,6 +106,9 @@ public class HeatMapOverlay extends Overlay {
         	}
         	else
         	{
+        		//Factor in screen dimensions.
+        		float radius = 1000;
+        		Log.i(TAG,"Zoomlevel: " + mapView.getZoomLevel());
         		 float pxRadius = (float) (mapView.getProjection().metersToEquatorPixels(radius) * 1/Math.cos(Math.toRadians(mapView.getMapCenter().getLatitudeE6()/1E6)));
                  HeatTask task = new HeatTask(mapView.getWidth(), mapView.getHeight(), pxRadius, heatPoints);
                  new Thread(task).start();
@@ -133,11 +140,9 @@ public class HeatMapOverlay extends Overlay {
                 @Override
                 public void run() {
                         Projection proj = mapView.getProjection();
-                        
-                        Point out = new Point(1, 1);
                         for(HeatPoint p : points){
                                 GeoPoint in = new GeoPoint((int)(p.lat*1E6),(int)(p.lon*1E6));
-                                proj.toPixels(in, out);
+                                Point out = proj.toPixels(in, null);
                                 addPoint(out.x, out.y, p.intensity);
                         }
                         colorize(0, 0);

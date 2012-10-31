@@ -80,9 +80,10 @@ public class HeatmapActivity extends MapActivity{
 	{
 		super.onWindowFocusChanged(hasFocus);
 		Log.i(TAG,mMapView.getWidth() + " " + mMapView.getHeight());
-		GeoPoint gp = new GeoPoint((int)37.573961*1000000,(int)-77.539614*1000000);
-		mMapView.getController().setZoom(10);
+		GeoPoint gp = new GeoPoint((int)(37.573961*1E6),(int)(-77.539614*1E6));
+		mMapView.getController().setZoom(11);
 		mMapView.getController().setCenter(gp);
+		mMapView.getController().animateTo(gp);
 		loadPointsFromDatabase();
 	}
 
@@ -93,7 +94,7 @@ public class HeatmapActivity extends MapActivity{
 		float lonseed = -77.539614f;
 		ArrayList<HeatPoint> returnList = new ArrayList<HeatPoint>();
 		Random r = new Random(System.currentTimeMillis());
-		for(int i = 0;i<100;i++)
+		for(int i = 0;i<1000;i++)
 		{
 			float newlat;
 			float newlon;

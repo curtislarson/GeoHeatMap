@@ -141,9 +141,9 @@ public class HeatMapOverlay extends Overlay {
                 public void run() {
                         Projection proj = mapView.getProjection();
                         for(HeatPoint p : points){
-                                GeoPoint in = new GeoPoint((int)(p.lat*1E6),(int)(p.lon*1E6));
+                                GeoPoint in = new GeoPoint((int)(p.mLat*1E6),(int)(p.mLon*1E6));
                                 Point out = proj.toPixels(in, null);
-                                addPoint(out.x, out.y, p.intensity);
+                                addPoint(out.x, out.y, p.mIntensity);
                         }
                         colorize(0, 0);
                         lock.lock();

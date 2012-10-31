@@ -26,22 +26,24 @@ package com.quackware.geoheatmap.map;
  *
  */
 public class HeatPoint {
-        public HeatPoint(float lat, float lon, int intensity) {
-                this.lat = lat;
-                this.lon = lon;
-                this.intensity = intensity;
+        public HeatPoint(float lat, float lon, int intensity, String timestamp) {
+                this.mLat = lat;
+                this.mLon = lon;
+                this.mIntensity = intensity;
+                this.mTimestamp = timestamp;
         }
 
-        public float lat;
-        public float lon;
-        public int intensity;
+        public float mLat;
+        public float mLon;
+        public int mIntensity;
+        public String mTimestamp;
         
         public HeatPoint(){
-                this(0f,0f,0);
+                this(0f,0f,0,"");
         }
         
-        public HeatPoint(float lat, float lon){
-                this(lat,lon,1);
+        public HeatPoint(float lat, float lon, String timestamp){
+                this(lat,lon,1,timestamp);
         }
         
 }

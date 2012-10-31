@@ -21,7 +21,9 @@
  */
 package com.quackware.geoheatmap.database;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.quackware.geoheatmap.map.HeatPoint;
 
@@ -40,7 +42,7 @@ public class HeatmapDatabaseHelper extends SQLiteOpenHelper {
 	public static boolean rebuild = true;
 	
 	private static final String GPS_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + GPS_TABLE_NAME
-			+ " (_id INTEGER PRIMARY KEY, LATITUDE DOUBLE, LONGITUDE DOUBLE);";
+			+ " (_id INTEGER PRIMARY KEY, LATITUDE DOUBLE, LONGITUDE DOUBLE, TIMESTAMP DATE);";
 	
 	public HeatmapDatabaseHelper(Context context)
 	{
@@ -64,7 +66,8 @@ public class HeatmapDatabaseHelper extends SQLiteOpenHelper {
 			{
 				double lat = cursor.getDouble(0);
 				double lon = cursor.getDouble(1);
-				HeatPoint hp = new HeatPoint((float)lat,(float)lon);
+				String timestamp = cursor.getString(2);
+				HeatPoint hp = new HeatPoint((float)lat,(float)lon,timestamp);
 				points.add(hp);
 			}
 			while(cursor.moveToNext());
@@ -79,6 +82,10 @@ public class HeatmapDatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put("LATITUDE",latitude);
 		values.put("LONGITUDE",longitude);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		values.put("TIMESTAMP",dateFormat.format(date));
 		
 		db.insert(GPS_TABLE_NAME, null, values);
 	}

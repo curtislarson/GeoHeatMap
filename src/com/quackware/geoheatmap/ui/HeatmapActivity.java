@@ -105,7 +105,7 @@ public class HeatmapActivity extends MapActivity{
 				newlon = lonseed + r.nextFloat()/100.0f;
 			else
 				newlon = lonseed - r.nextFloat()/100.0f;
-			returnList.add(new HeatPoint(newlat,newlon));
+			returnList.add(new HeatPoint(newlat,newlon,"10/10/2012"));
 		}
 		return returnList;
 	}

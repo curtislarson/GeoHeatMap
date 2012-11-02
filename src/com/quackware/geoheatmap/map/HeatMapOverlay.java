@@ -24,6 +24,7 @@ package com.quackware.geoheatmap.map;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RadialGradient;
 import android.graphics.Shader.TileMode;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -38,6 +40,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
+import com.quackware.geoheatmap.MyApplication;
 
 /**
  * @author Vinicius Carvalho An overlay that draws a heatmap using a set of
@@ -117,7 +120,9 @@ public class HeatMapOverlay extends Overlay {
 		} else {
 			// Factor in screen dimensions.
 			//float radius = 100 * (20 - mapView.getZoomLevel());
-			float radius = 1000 / mapView.getZoomLevel();
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance());
+
+			float radius = prefs.getInt("heatPointRadius", 1000) / mapView.getZoomLevel();
 			Log.i(TAG, "Zoomlevel: " + mapView.getZoomLevel());
 			float pxRadius = (float) (mapView.getProjection()
 					.metersToEquatorPixels(radius) * 1 / Math.cos(Math

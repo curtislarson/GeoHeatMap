@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+ <PreferenceCategory
+   android:summary="Preferences for the map portion of GeoHeatMap"
+   android:title="Heatmap Preferences" >
+  <EditTextPreference
+     android:key="heatPointRadius"
+     android:summary="HeatPoint Radius"
+     android:title="HeatPoint Radius" 
+     android:defaultValue="1000"/>
+ </PreferenceCategory>
+ <PreferenceCategory
+     android:summary="Preferences for the GPS portion of GeoHeatMap"
+     android:title="GPS Preferences">
+  <EditTextPreference
+      android:key="gpsCheckTime"
+      android:summary="@string/gpsPrefSummary"
+      android:title="@string/gpsPrefTitle"
+      android:defaultValue="1">      
+  </EditTextPreference>
+ </PreferenceCategory>
+</PreferenceScreen>

@@ -28,6 +28,7 @@ import com.quackware.geoheatmap.database.HeatmapDatabaseHelper;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -35,6 +36,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 
 //Request gps and network provider.
 //If receive network provider, wait 1 minute and see if we get gps provider.
@@ -77,7 +79,9 @@ public class GpsService extends Service implements LocationListener {
 		//Schedule another check for gps.
 		//Change 1 to whatever minute value we want.
 		mLocationManager.removeUpdates(this);
-		mHandler.postDelayed(mGpsRunnable,1000*60*1);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+		mHandler.postDelayed(mGpsRunnable,1000*60*prefs.getInt("gpsCheckTime", 1));
 	}
 	
 	private Runnable mGpsRunnable = new Runnable()

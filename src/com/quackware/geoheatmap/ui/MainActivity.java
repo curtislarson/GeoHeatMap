@@ -74,6 +74,13 @@ public class MainActivity extends Activity {
 				Intent intent = new Intent(MainActivity.this,HeatmapActivity.class);
 				startActivity(intent);
 			}});
+    	((Button)findViewById(R.id.prefs)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(MainActivity.this,MyPreferenceActivity.class);
+				startActivity(intent);
+			}});
     }
     
     private ServiceConnection mConnection = new ServiceConnection() {

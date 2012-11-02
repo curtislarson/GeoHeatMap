@@ -45,5 +45,11 @@
     android:id="@+id/map"
     android:text="Map">       
     </Button>
+    <Button 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/prefs"
+    android:text="Preferences">       
+    </Button>
     
 </LinearLayout>

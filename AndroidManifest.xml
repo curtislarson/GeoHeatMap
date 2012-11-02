@@ -25,6 +25,10 @@
             android:name=".ui.HeatmapActivity"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+        <activity
+            android:name=".ui.MyPreferenceActivity"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
         <service
             android:name="service.GpsService">
             

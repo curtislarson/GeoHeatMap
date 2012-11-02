@@ -6,6 +6,8 @@
     
     <string name="gpsPrefSummary">Retrieve GPS coordinates at this interval</string>
     <string name="gpsPrefTitle">GPS Check Interval</string>
+    <string name="heatmapPrefSummary">HeatPoint Radius</string>
+    <string name="heatmapPrefTitle">HeatPoint Radius</string>
     <!-- DEBUG KEYS -->
     <string name="Cr48DebugMD5">44:1C:AF:B2:5B:DB:DA:DB:D1:EC:80:D6:29:1A:4E:3F</string>
     <string name="Cr48DebugKey">0T8qr9wGZ5bPHYhX58ALhEDX_PwJAYU_Pfa7hyQ</string>

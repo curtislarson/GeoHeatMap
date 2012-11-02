@@ -5,8 +5,8 @@
    android:title="Heatmap Preferences" >
   <EditTextPreference
      android:key="heatPointRadius"
-     android:summary="HeatPoint Radius"
-     android:title="HeatPoint Radius" 
+     android:summary="@string/heatmapPrefSummary"
+     android:title="@string/heatmapPrefTitle"
      android:defaultValue="1000"/>
  </PreferenceCategory>
  <PreferenceCategory
